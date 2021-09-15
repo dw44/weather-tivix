@@ -2,14 +2,17 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 
 import Global from '../styles/Global';
+import fetchData from '../util/fetchData';
 
 export default function Home() {
   useEffect(() => {
-    fetch('https://api.openweathermap.org/data/2.5/forecast?q=Toronto,CA&appid=9fb8e41a804240e128d5aa77e744bfcc')
-      .then((response) => response.json())
-      .then((data) => {
-        data.list.forEach((dataset) => console.log(dataset.dt_txt));
-      });
+    fetchData('Toronto', 'CA');
+    // async function f() {
+    //   const s = await fetchData('Toronto', 'CA');
+    //   console.log(s);
+    // }
+
+    // f();
   }, []);
 
   return (
