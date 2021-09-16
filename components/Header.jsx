@@ -6,7 +6,7 @@ import location from '../util/location';
 
 const StyledHeader = styled.header`
   width: 100vw;
-  height: 240px;
+  height: 280px;
   background-color: #2DEA8F;
   
   & * {
@@ -46,7 +46,7 @@ const StyledHeader = styled.header`
     height: 40px;
     font-weight: 500;
     font-size: 24px;
-    width: 100px;
+    width: 240px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -58,7 +58,7 @@ const StyledHeader = styled.header`
   }
 `;
 
-export default function Header({ getWeather }) {
+export default function Header({ getWeather, toggleUnits, imperialUnits }) {
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [usState, setUsState] = useState('');
@@ -67,11 +67,16 @@ export default function Header({ getWeather }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (city.trim() === '' || country === '') {
-      alert('City and Country Must Be Provided');
-    } else {
+    // dont' submit form if fields are missing
+    // eslint-disable-next-line no-empty
+    if (city.trim() === '' || country === '') {} else {
       getWeather(city, country, usState);
     }
+  };
+
+  const handleToggle = (e) => {
+    e.preventDefault();
+    toggleUnits();
   };
 
   const countryCodes = Object.keys(location.countryCodes);
@@ -101,6 +106,7 @@ export default function Header({ getWeather }) {
           ))}
         </select>
         <button onClick={handleSubmit} type="submit">Search</button>
+        <button onClick={handleToggle} type="submit">{imperialUnits ? 'Metric' : 'Imperial Units'}</button>
       </form>
     </StyledHeader>
   );

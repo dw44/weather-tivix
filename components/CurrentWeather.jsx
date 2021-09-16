@@ -5,6 +5,7 @@ import WeatherData from './WeatherData';
 
 const StyledWeather = styled.div`
   padding: 24px; 
+  padding-top: 0;
   
   h2 {
     font-weight: 500;
@@ -26,7 +27,7 @@ export default function CurrentWeather({
   dailyMax, dailyMin,
   feelsLike, humidity,
   visibility, wind,
-  city, country,
+  city, country, imperialUnits,
 }) {
   return (
     <StyledWeather>
@@ -37,9 +38,9 @@ export default function CurrentWeather({
         {location.countryCodes[country]}
       </h2>
       <p className="temparature">
-        {current}
+        {imperialUnits ? (current * 1.8 + 32).toFixed(0) : current}
         {'° '}
-        C
+        {imperialUnits ? 'F' : 'C'}
       </p>
       <WeatherData
         cloudCover={cloudCover}
@@ -49,6 +50,7 @@ export default function CurrentWeather({
         humidity={humidity}
         visibility={visibility}
         wind={wind}
+        imperialUnits={imperialUnits}
       />
     </StyledWeather>
   );

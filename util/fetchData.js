@@ -23,7 +23,8 @@ async function getFiveDayForecast(city, country, state = '') {
 
     return filtered;
   } catch (error) {
-    return null;
+    // return 1 if there's an error. arrangements exist to handle returned 1
+    return 1;
   }
 }
 
@@ -53,7 +54,7 @@ async function getCurrentWeather(city, country, state = '') {
 
     return filtered;
   } catch (error) {
-    return null;
+    return 1;
   }
 }
 

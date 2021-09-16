@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import Head from 'next/head';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -6,6 +5,8 @@ import styled from 'styled-components';
 import CurrentWeather from '../components/CurrentWeather';
 import FiveDayForecast from '../components/FiveDayForecast';
 import Header from '../components/Header';
+import NoData from '../components/NoData';
+import QueryError from '../components/QueryError';
 
 import Global from '../styles/Global';
 import fetchData from '../util/fetchData';
@@ -13,20 +14,40 @@ import fetchData from '../util/fetchData';
 const MainPage = styled.div`
   width: 100vw;
   min-height: 100vh;
+  background-color: #f5f9ff;
+  position: relative;
+
+  .weather-container {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    padding-top: 30px;
+
+    @media only screen and (max-width: 992px) {
+      grid-template-columns: 100%;
+    }
+  }
 `;
 
 export default function Home() {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
-  const [imperialUnits, setImperialUnits] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [imperial, setImperial] = useState(false);
 
   const getWeather = async (city, country, state = '') => {
     const weather = await (fetchData(city, country, state));
-    setCurrentWeather(weather.currentWeather);
-    setForecast(weather.forecast);
+    // only update state if valid data is recieve. 1 signifies an error
+    if (weather.forecast !== 1) {
+      setCurrentWeather(weather.currentWeather);
+      setForecast(weather.forecast);
+    } else {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 3000);
+    }
   };
 
-  const toggleUnits = () => setImperialUnits(!imperialUnits);
+  // toggle between metric and imperial units
+  const toggleUnits = () => setImperial(!imperial);
 
   return (
     <MainPage>
@@ -38,17 +59,23 @@ export default function Home() {
       <Global />
       <Header
         getWeather={getWeather}
-        setImperialUnits={setImperialUnits}
+        toggleUnits={toggleUnits}
+        imperialUnits={imperial}
       />
+      {showError && <QueryError text="No Results Found.Please Enter A Valid Query" />}
       {currentWeather
-        ? <CurrentWeather {...currentWeather} />
-        : null}
-      {forecast
-        ? <FiveDayForecast forecast={JSON.stringify(forecast)} />
-        : null}
+        ? (
+          <div className="weather-container">
+            {currentWeather
+              ? <CurrentWeather imperialUnits={imperial} {...currentWeather} />
+              : null}
+            {forecast
+              ? <FiveDayForecast imperialUnits={imperial} forecast={JSON.stringify(forecast)} />
+              : null}
+          </div>
+        )
+        : <NoData />}
+
     </MainPage>
   );
 }
-
-// fivedayforecast props => JSON.stringify(forecast)
-// currentweather props => ...currentWeather

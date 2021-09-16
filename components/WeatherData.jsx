@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import styled from 'styled-components';
 
 const StyledWeather = styled.div`
@@ -18,7 +19,7 @@ const StyledWeather = styled.div`
 
 export default function WeatherData({
   cloudCover, dailyMax, dailyMin, feelsLike,
-  humidity, visibility, wind,
+  humidity, visibility, wind, imperialUnits,
 }) {
   // wind returned as string by api request
   const numberWind = Number(wind);
@@ -28,8 +29,9 @@ export default function WeatherData({
         <li>
           Feels Like:
           {'   '}
-          {feelsLike}
-          ° C
+          {imperialUnits ? (feelsLike * 1.8 + 32).toFixed(0) : feelsLike}
+          °
+          {imperialUnits ? 'F' : 'C'}
         </li>
         <li>
           Cloud Cover:
@@ -40,14 +42,16 @@ export default function WeatherData({
         <li>
           Daily Maximum:
           {'   '}
-          {dailyMax}
-          ° C
+          {imperialUnits ? (dailyMax * 1.8 + 32).toFixed(0) : dailyMax}
+          °
+          {imperialUnits ? 'F' : 'C'}
         </li>
         <li>
           Daily Minimum:
           {'   '}
-          {dailyMin}
-          ° C
+          {imperialUnits ? (dailyMin * 1.8 + 32).toFixed(0) : dailyMin}
+          °
+          {imperialUnits ? 'F' : 'C'}
         </li>
 
         <li>
@@ -60,17 +64,20 @@ export default function WeatherData({
         <li>
           Visibility:
           {'   '}
-          {visibility}
+          {imperialUnits ? (visibility / 1.609).toFixed(1) : visibility.toFixed(1)}
           {' '}
-          km
+          {imperialUnits ? 'mi' : 'km'}
         </li>
 
         <li>
           Wind Speed:
           {'   '}
-          {Number.isNaN(wind) ? '0' : numberWind.toFixed(1)}
+          {Number.isNaN(wind) ? '0'
+            : imperialUnits
+              ? (numberWind / 1.6093).toFixed(1)
+              : numberWind.toFixed(1)}
           {' '}
-          km/h
+          {imperialUnits ? 'mi/h' : 'km/h'}
         </li>
       </ul>
     </StyledWeather>

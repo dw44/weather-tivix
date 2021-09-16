@@ -5,6 +5,7 @@ import addZero from '../util/addZero';
 import DailyForecast from './DailyForecast';
 
 const StyledForecast = styled.section`
+
   h3 {    
     font-weight: 500;
     font-size: 2.5em;
@@ -15,7 +16,7 @@ const StyledForecast = styled.section`
 
 // forecast stringified before being passed as props
 // to avoid issues with reference types
-export default function Forecast({ forecast }) {
+export default function Forecast({ forecast, imperialUnits }) {
   const rawForecast = JSON.parse(forecast);
 
   const today = new Date();
@@ -27,7 +28,6 @@ export default function Forecast({ forecast }) {
   // group data by date
   // creates an object with 7-8 datapoints for each date at 3hr intervals
   const dateWiseData = forecastFinal.reduce((r, a) => {
-    // eslint-disable-next-line no-param-reassign
     r[a.date] = r[a.date] || [];
     r[a.date].push(a);
     return r;
@@ -41,6 +41,7 @@ export default function Forecast({ forecast }) {
         .slice(0, 5)
         .map((date) => (
           <DailyForecast
+            imperialUnits={imperialUnits}
             key={uuid()}
             forecast={JSON.stringify(dateWiseData[date])}
           />
