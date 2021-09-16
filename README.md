@@ -14,3 +14,14 @@
 - The DataTracker class is in the 'utils' directory.
 - The DataTracker is used in the DailyForecast component to track various datasets.
 - City and country fields cannot be empty or search won't query the api.
+
+Similar projects:
+
+### Where in the world:
+- https://github.com/dw44/countries
+- https://countries-tanzeel.vercel.app/
+
+### Weather App:
+- An old project made using Vanilla JS, primarily to practice Webpack.
+- https://github.com/dw44/weather_app
+- https://weather-tanzeel.vercel.app/
