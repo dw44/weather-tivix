@@ -13,3 +13,4 @@
 ## Information:
 - The DataTracker class is in the 'utils' directory.
 - The DataTracker is used in the DailyForecast component to track various datasets.
+- City and country fields cannot be empty or search won't query the api.
