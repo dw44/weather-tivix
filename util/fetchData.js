@@ -23,7 +23,7 @@ async function getFiveDayForecast(city, country, state = '') {
 
     return filtered;
   } catch (error) {
-    console.error(error);
+    return null;
   }
 }
 
@@ -37,20 +37,23 @@ async function getCurrentWeather(city, country, state = '') {
 
     // 273 subtracted from all temparature values to get celsius
     // wind * 3.6 to convert from m/s to km/h
+    // visibility divided by 1000 to convert to km
     const filtered = {
       current: weather.main.temp.toFixed(0) - 273,
       feelsLike: weather.main.feels_like.toFixed(0) - 273,
       dailyMin: weather.main.temp_min.toFixed(0) - 273,
       dailyMax: weather.main.temp_max.toFixed(0) - 273,
       humidity: weather.main.humidity,
-      wind: Number((weather.wind.gust * 3.6).toFixed(1)),
-      pressure: weather.main.pressure,
+      wind: weather.wind.gust * 3.6,
+      visibility: weather.visibility / 1000,
       cloudCover: weather.clouds.all,
+      city: weather.name,
+      country: weather.sys.country,
     };
 
     return filtered;
   } catch (error) {
-    console.error(error);
+    return null;
   }
 }
 

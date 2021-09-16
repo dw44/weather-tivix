@@ -1,24 +1,30 @@
+/* eslint-disable no-alert */
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import location from '../util/location';
 
 const StyledHeader = styled.header`
   width: 100vw;
-  height: 100%;
-  background-color: #ce5cff;
+  height: 240px;
+  background-color: #2DEA8F;
+  
+  & * {
+    color: #243D44;
+  }
+  
 
   h1 {
     text-align: center;
-    color: #eeeeee;
     font-size: 2rem;
-    margin: 10px; 
+    padding: 10px; 
   }
 
   form { text-align: center; }
 
   input, 
   select {
+    color: 
     width: 50%;
     display: block;
     margin: 6px auto;
@@ -33,51 +39,68 @@ const StyledHeader = styled.header`
     width: 20%;
     margin: 10px;
   }
+
+  button {
+    display: block;
+    margin: 10px auto;
+    height: 40px;
+    font-weight: 500;
+    font-size: 24px;
+    width: 100px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.4s;
+  }
+
+  button:hover {
+    background-color: #ccc;
+  }
 `;
 
-export default function Header() {
-  // set to true if country = usa
-  const [enableStatePicker, setEnableStatePicker] = useState(false);
+export default function Header({ getWeather }) {
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [usState, setUsState] = useState('');
 
-  const handleChange = (e, stateSetter) => stateSetter(e.target.value);
+  const handleChange = (stateSetter, e) => stateSetter(e.target.value);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (city.trim() === '' || country === '') {
+      alert('City and Country Must Be Provided');
+    } else {
+      getWeather(city, country, usState);
+    }
+  };
 
   const countryCodes = Object.keys(location.countryCodes);
-
-  // toggle state picker on/off based on the US being selected
-  useEffect(() => {
-    if (country === 'US') {
-      setEnableStatePicker(true);
-    } else {
-      setEnableStatePicker(false);
-    }
-  }, [country]);
 
   return (
     <StyledHeader>
       <h1>Please Enter A Location:</h1>
       <form>
-        <input type="text" placeholder="City" value={city} onChange={(e) => handleChange(e, setCity)} />
+        <input type="text" placeholder="City" value={city} onChange={(e) => handleChange(setCity, e)} />
         <select
-          value={usState}
-          onChange={(e) => handleChange(e, setUsState)}
+          value={country}
+          onChange={(e) => handleChange(setCountry, e)}
         >
-          <option value="">Select A Country</option>
+          <option value="">Pick A Country</option>
           {countryCodes.map((code) => (
             <option key={code} value={code}>{location.countryCodes[code]}</option>
           ))}
         </select>
         <select
-          value={country}
-          onChange={(e) => handleChange(e, setCountry)}
+          value={country === 'US' ? usState : ''}
+          onChange={(e) => handleChange(setUsState, e)}
+          disabled={country !== 'US'}
         >
-          <option value="">Pick A State</option>
+          <option value="">Pick A (US) State</option>
           {location.states.map((state) => (
             <option value={state} key={state}>{state}</option>
           ))}
         </select>
+        <button onClick={handleSubmit} type="submit">Search</button>
       </form>
     </StyledHeader>
   );

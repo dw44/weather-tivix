@@ -2,7 +2,6 @@
 import Head from 'next/head';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { SpinnerRoundOutlined } from 'spinners-react';
 
 import CurrentWeather from '../components/CurrentWeather';
 import FiveDayForecast from '../components/FiveDayForecast';
@@ -14,10 +13,6 @@ import fetchData from '../util/fetchData';
 const MainPage = styled.div`
   width: 100vw;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 200px 1fr 2fr;
-
 `;
 
 export default function Home() {
@@ -45,6 +40,12 @@ export default function Home() {
         getWeather={getWeather}
         setImperialUnits={setImperialUnits}
       />
+      {currentWeather
+        ? <CurrentWeather {...currentWeather} />
+        : null}
+      {forecast
+        ? <FiveDayForecast forecast={JSON.stringify(forecast)} />
+        : null}
     </MainPage>
   );
 }

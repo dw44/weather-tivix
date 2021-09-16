@@ -5,7 +5,12 @@ import addZero from '../util/addZero';
 import DailyForecast from './DailyForecast';
 
 const StyledForecast = styled.section`
-
+  h3 {    
+    font-weight: 500;
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 20px;
+  }
 `;
 
 // forecast stringified before being passed as props
@@ -22,6 +27,7 @@ export default function Forecast({ forecast }) {
   // group data by date
   // creates an object with 7-8 datapoints for each date at 3hr intervals
   const dateWiseData = forecastFinal.reduce((r, a) => {
+    // eslint-disable-next-line no-param-reassign
     r[a.date] = r[a.date] || [];
     r[a.date].push(a);
     return r;
@@ -30,7 +36,7 @@ export default function Forecast({ forecast }) {
   // list is sliced to display first 5 days only
   return (
     <StyledForecast>
-      <h1>Forecast</h1>
+      <h3>Five Day Forecast</h3>
       {Object.keys(dateWiseData)
         .slice(0, 5)
         .map((date) => (
