@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import { v4 as uuid } from 'uuid';
 
 import addZero from '../util/addZero';
-import DataTracker from '../util/DataTracker';
 import DailyForecast from './DailyForecast';
 
 const StyledForecast = styled.section`
@@ -27,11 +27,18 @@ export default function Forecast({ forecast }) {
     return r;
   }, Object.create(null));
 
+  // list is sliced to display first 5 days only
   return (
     <StyledForecast>
       <h1>Forecast</h1>
       {Object.keys(dateWiseData)
-        .map((date) => <DailyForecast forecast={JSON.stringify(dateWiseData[date])} />)}
+        .slice(0, 5)
+        .map((date) => (
+          <DailyForecast
+            key={uuid()}
+            forecast={JSON.stringify(dateWiseData[date])}
+          />
+        ))}
     </StyledForecast>
   );
 }

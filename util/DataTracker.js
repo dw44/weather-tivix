@@ -8,10 +8,6 @@ class DataTracker {
     this.showMode.bind(this);
   }
 
-  get data() {
-    return [...this.data];
-  }
-
   insert = (value) => {
     this.data.push(value);
   }

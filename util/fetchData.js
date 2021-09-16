@@ -13,17 +13,17 @@ async function getFiveDayForecast(city, country, state = '') {
     // date-time returned as 1 string by api so split up for convenience
     const filtered = forecast.list.map((data) => ({
       temparature: data.main.temp.toFixed(0) - 273,
-      feelsLike: data.main.feels_like.toFixed(0) - 273,
       humidity: data.main.humidity,
       precipitation: data.pop * 100,
-      conditions: data.weather[0].description,
+      cloudCover: data.clouds.all,
+      windGust: Number((data.wind.gust * 3.6).toFixed(1)),
       date: data.dt_txt.split(' ')[0],
       time: data.dt_txt.split(' ')[1],
     }));
 
     return filtered;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -50,7 +50,7 @@ async function getCurrentWeather(city, country, state = '') {
 
     return filtered;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 

@@ -55,6 +55,7 @@ const Global = createGlobalStyle`
   *:before,
   *:after {
     box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
   }
 `;
 

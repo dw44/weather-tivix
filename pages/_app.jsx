@@ -1,4 +1,5 @@
-/* eslint-disable react/prop-types */
+import '../styles/fonts.css';
+
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />;
 }
